@@ -1,0 +1,43 @@
+# Environment variables
+.env
+
+# Htaccess
+.htaccess
+
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+*.prof
+*.trace
+dist/
+vendor/
+
+# IDE/Editor
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.log
+*.bak
+*.bkp
+*.backup
+*.dtmp
+*.swp
+*~
+
+# Temp directories
+temp/
+tmp/
+temp-*
+tmp-*
