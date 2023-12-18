@@ -1,41 +1,40 @@
 package main
 
 import (
+	"AkwardSilents/pkg/interfaces/socket"
 	"fmt"
-	"golang.org/x/net/websocket"
-	"net/http"
+	"sync"
 )
 
-/* Broadcast message to all connected clients */
-func (s *Server) broadcast(b []byte) {
-	for ws := range s.conns {
-		go func(ws *websocket.Conn) {
-			if _, err := ws.Write(b); err != nil {
-				fmt.Println("write error:", err)
-			}
-		}(ws)
-	}
-}
-
 func main() {
-	signupEndpoint()
-	structureEndpoint()
-}
+	var wg sync.WaitGroup
+	wg.Add(2)
 
-func signupEndpoint() {
-	server := NewServer()
-	http.Handle("/account", websocket.Handler(server.handleWS))
-	err := http.ListenAndServe(":3000", nil)
-	if err != nil {
-		fmt.Println("Error starting signup server:", err)
-	}
-}
+	done := make(chan struct{})
 
-func structureEndpoint() {
-	server := NewServer()
-	http.Handle("/chats", websocket.Handler(server.handleWS))
-	err := http.ListenAndServe(":3000", nil)
-	if err != nil {
-		fmt.Println("Error starting structure server:", err)
-	}
+	go func() {
+		defer wg.Done()
+		err := socket.SignupEndpoint()
+		if err != nil {
+			fmt.Println("Error starting SignupEndpoint:", err)
+		}
+		close(done)
+	}()
+
+	go func() {
+		defer wg.Done()
+		err := socket.ChatEndpoint()
+		if err != nil {
+			fmt.Println("Error starting ChatEndpoint:", err)
+		}
+		close(done)
+	}()
+
+	wg.Wait()
+
+	// Wait for both servers to finish
+	<-done
+	<-done
+
+	fmt.Println("Server started")
 }

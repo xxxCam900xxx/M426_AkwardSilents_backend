@@ -6,10 +6,10 @@ import (
 	"net/http"
 )
 
-func SignupEndpoint() error {
+func ChatEndpoint() error {
 	s := server.NewServer()
-	http.Handle("/account", websocket.Handler(s.HandleWSAccount))
-	err := http.ListenAndServe(":3000", nil)
+	http.Handle("/chat", websocket.Handler(s.HandleWSChat))
+	err := http.ListenAndServe(":3001", nil)
 	if err != nil {
 		return err
 	}
