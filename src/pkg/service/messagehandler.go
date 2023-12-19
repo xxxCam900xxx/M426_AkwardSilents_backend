@@ -1,4 +1,4 @@
-package main
+package service
 
 import (
 	"encoding/json"
@@ -7,7 +7,7 @@ import (
 
 // Define a struct to hold the JSON data
 type Message struct {
-    Typ string `json:"typ"` // sendmessage, getmessage, getoverview, getmembers
+    Typ string `json:"typ"` // sendmessage, getmessage, getoverview, getmembers  vt
     Content map[string]string `json:"content"`
 }
 
@@ -30,10 +30,7 @@ func MessageHandlerChats(msg []byte, name string) {
 				getoverview(message.Content)
 			case "getmembers":
 				getmembers(message.Content)
-			default:
-				fmt.Println(message)
-
-				}			
+			}			
 		}
 	}
 }
@@ -44,4 +41,3 @@ func main() {
 	// Call the function with the JSON string and a name
 	MessageHandlerChats(jsonString, "Bob")
 }
-
