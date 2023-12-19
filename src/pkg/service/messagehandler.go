@@ -34,10 +34,3 @@ func MessageHandlerChats(msg []byte, name string) {
 		}
 	}
 }
-
-func main() {
-	// A sample JSON string
-	jsonString := []byte(`{"typ":"getmessage","content":{"text":"wqe"}}`)
-	// Call the function with the JSON string and a name
-	MessageHandlerChats(jsonString, "Bob")
-}
