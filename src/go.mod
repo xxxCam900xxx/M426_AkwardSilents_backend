@@ -1,4 +1,4 @@
-module socketio
+module AkwardSilents
 
 go 1.20
 
