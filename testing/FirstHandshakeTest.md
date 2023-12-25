@@ -3,7 +3,7 @@
 3. Open Konsole
 4. Type:
     ````
-    let socket = new WebSocket("ws://localhost:3000/ws")
+    let socket = new WebSocket("ws://localhost:3000")
     ````
 5. Enter
 6. Type:
