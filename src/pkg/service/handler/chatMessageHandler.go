@@ -21,7 +21,7 @@ func MessageHandlerChats(msg []byte) {
 	} else {
 		switch message.Typ {
 		case "login":
-			//login(message.Content);
+			login(message.Content);
 		case "sendmessage":
 			//sendmessage(message.Content)
 		case "getmessage":

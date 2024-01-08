@@ -7,6 +7,7 @@ import (
 )
 
 func main() {
+	fmt.Println("start Server")	
 	var wg sync.WaitGroup
 	wg.Add(2)
 
@@ -18,15 +19,25 @@ func main() {
 		if err != nil {
 			fmt.Println("Error starting SignupEndpoint:", err)
 		}
+		fmt.Println("start Server1")	
+
 		close(done)
 	}()
 
 	go func() {
+		fmt.Println("start Server1")	
+
 		defer wg.Done()
+		fmt.Println("start Server1")	
+
 		err := socket.ChatEndpoint()
+
+		fmt.Println("start Server1")	
 		if err != nil {
 			fmt.Println("Error starting ChatEndpoint:", err)
 		}
+		fmt.Println("start Server2")	
+
 		close(done)
 	}()
 
