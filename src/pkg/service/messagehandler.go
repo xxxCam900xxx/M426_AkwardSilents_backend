@@ -7,8 +7,8 @@ import (
 
 // Define a struct to hold the JSON data
 type Message struct {
-    Typ string `json:"typ"` // sendmessage, getmessage, getoverview, getmembers  vt
-    Content map[string]string `json:"content"`
+	Typ     string            `json:"typ"` // sendmessage, getmessage, getoverview, getmembers  vt
+	Content map[string]string `json:"content"`
 }
 
 func MessageHandlerChats(msg []byte, name string) {
@@ -23,14 +23,14 @@ func MessageHandlerChats(msg []byte, name string) {
 			// Print the Message object
 			switch message.Typ {
 			case "sendmessage":
-				sendmessage(message.Content)
+				//sendmessage(message.Content)
 			case "getmessage":
-				getmessage(message.Content)
+				//getmessage(message.Content)
 			case "getoverview":
-				getoverview(message.Content)
+				//getoverview(message.Content)
 			case "getmembers":
-				getmembers(message.Content)
-			}			
+				//getmembers(message.Content)
+			}
 		}
 	}
 }
