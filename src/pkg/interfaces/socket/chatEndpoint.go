@@ -9,7 +9,7 @@ import (
 func ChatEndpoint() error {
 	s := server.NewServer()
 	http.Handle("/chat", websocket.Handler(s.HandleWSChat))
-	err := http.ListenAndServe(":3001", nil)
+	err := http.ListenAndServe(":3000", nil)
 	if err != nil {
 		return err
 	}
