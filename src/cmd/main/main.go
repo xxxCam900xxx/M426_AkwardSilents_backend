@@ -1,12 +1,17 @@
 package main
 
 import (
+	"AkwardSilents/log"
 	"AkwardSilents/pkg/interfaces/socket"
 	"fmt"
 	"sync"
 )
 
 func main() {
+
+	log.Info("Server started")
+	fmt.Println("Server started")
+
 	var wg sync.WaitGroup
 	wg.Add(2)
 
