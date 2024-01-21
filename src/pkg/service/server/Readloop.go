@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"golang.org/x/net/websocket"
 	"io"
-	"AkwardSilents/pkg/service/handler"
 
 )
 
@@ -41,7 +40,7 @@ func (s *Server) readLoopChat(ws *websocket.Conn) {
         }
         msg := buf[:n]
         // Name initialisieren
-        handler.Chat(msg, ws, &name)
+        service.MessageHandlerChats(msg, ws, &name)
 		fmt.Println("Neuer Name:",name)
     
         //TODO: Process the received message if needed

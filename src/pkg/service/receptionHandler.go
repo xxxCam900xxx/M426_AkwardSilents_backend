@@ -3,19 +3,13 @@ package service
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/joho/godotenv"
 	"log"
 	"math/rand"
 	"os"
 	"strconv"
 	"strings"
-)
-
-// Define a struct to hold the JSON data
-type message struct {
-	Typ     string            `json:"typ"` // sendmessage, getmessage, getoverview, getmembers  vt
-	Content map[string]string `json:"content"`
-}
+	"golang.org/x/net/websocket"
+	"AkwardSilents/pkg/service/functions")
 
 // Message Define a struct to hold the JSON data
 type register struct {
@@ -24,33 +18,42 @@ type register struct {
 }
 
 func init() {
-	err := godotenv.Load(".env")
+	/*err := godotenv.Load(".env")
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
+
 	log.Println("Loaded .env file")
+	*/
+	log.Println("Log")
 }
 
-func MessageHandlerChats(msg []byte, name string) {
-	if name != "" {
-		// Create an empty Message object
-		var message message
-		// Unmarshal the JSON string into the Message object
-		err := json.Unmarshal(msg, &message)
-		if err != nil {
-			fmt.Println("Unmarshal - Error:", err)
-		} else {
-			// Print the Message object
-			switch message.Typ {
-			case "sendmessage":
-				//sendmessage(message.Content)
-			case "getmessage":
-				//getmessage(message.Content)
-			case "getoverview":
-				//getoverview(message.Content)
-			case "getmembers":
-				//getmembers(message.Content)
-			}
+
+// Define a struct to hold the JSON data
+type message struct {
+	Typ     string            `json:"typ"` // sendmessage, getmessage, getoverview, getmembers  vt
+	Content	map[string]string `json:"content"`
+}
+
+func MessageHandlerChats(msg []byte, ws *websocket.Conn, name *string) {
+	var message message
+	// Unmarshal the JSON string into the Message object
+	msg = []byte(strings.ReplaceAll(string(msg), "'", "\""))
+	err := json.Unmarshal(msg, &message)
+	if err != nil {
+		fmt.Println("Error:", err)
+	} else {
+		switch message.Typ {
+		case "login":
+			_, err = ws.Write([]byte(functions.Login(message.Content, name)))
+		case "sendmessage":
+			//sendmessage(message.Content)
+		case "getmessage":
+			//getmessage(message.Content)
+		case "getoverview":
+			//getoverview(message.Content)
+		case "getmembers":
+			//getmembers(message.Content)
 		}
 	}
 }
