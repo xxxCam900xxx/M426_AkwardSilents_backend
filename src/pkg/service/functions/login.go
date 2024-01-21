@@ -5,46 +5,34 @@ import (
 	"AkwardSilents/pkg/service/dbfunctions"
 )
 
-func Login(content map[string]string) {
-	val, ok := content["Key"]
+func Login(content map[string]string, userName *string) string {
+	key, ok := content["Key"]
 	// If the key exists
 	if !ok {
 		// send back login failed
-		fmt.Println("Key not here")
+		return "login failed"
 	}
-	fmt.Println(val);
+	fmt.Println(key);
 	if ok {
-		err := db.InitDB()
+		// Daten aus der Tabelle abrufen
+		// Daten aus der Tabelle abrufen
+		rows, err := db.DB.Query("SELECT name FROM User WHERE key = ?", key)
 		if err != nil {
 			panic(err)
 		}
+		defer rows.Close()
 
-		_, err = db.DB.Exec(`CREATE TABLE IF NOT EXISTS users (
-			id INTEGER PRIMARY KEY AUTOINCREMENT,
-			name TEXT NOT NULL,
-			email TEXT NOT NULL UNIQUE
-		)`)
-		if err != nil {
-			panic(err)
-		}
-
-
-  // Daten aus der Tabelle abrufen
-  rows, err := db.DB.Query("SELECT * FROM users")
-  if err != nil {
-	panic(err)
-}
-  defer rows.Close()
-
-	// Ergebnisse ausgeben
+		// Ergebnisse ausgeben
 		for rows.Next() {
-			var id int
 			var name string
-			var email string
-			err = rows.Scan(&id, &name, &email)
+			err = rows.Scan(&name)
+			*userName = name	
 			if err != nil {
-				panic(err)			}
-			fmt.Printf("ID: %d, Name: %s, Email: %s\n", id, name, email)
+				panic(err)			
+			}
+			return "login success"
 		}
+		return "login failed"
 	}
+	return "login failed"
 }

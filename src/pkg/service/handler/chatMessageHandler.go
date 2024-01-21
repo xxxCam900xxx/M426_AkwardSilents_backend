@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"AkwardSilents/pkg/service/functions"
     "strings"
+	"golang.org/x/net/websocket"
 )
 
 // Define a struct to hold the JSON data
@@ -13,10 +14,7 @@ type message struct {
 	Content	map[string]string `json:"content"`
 }
 
-func Warumdasnicht(msg []byte) {
-	fmt.Println("Message handler bekommen")
-
-	// Create an empty Message object
+func Chat(msg []byte, ws *websocket.Conn, name *string) {
 	var message message
 	// Unmarshal the JSON string into the Message object
 	msg = []byte(strings.ReplaceAll(string(msg), "'", "\""))
@@ -24,11 +22,9 @@ func Warumdasnicht(msg []byte) {
 	if err != nil {
 		fmt.Println("Error:", err)
 	} else {
-		fmt.Println(message.Typ)
-		fmt.Println(message.Content)
 		switch message.Typ {
 		case "login":
-			functions.Login(message.Content);
+			_, err = ws.Write([]byte(functions.Login(message.Content, name)))
 		case "sendmessage":
 			//sendmessage(message.Content)
 		case "getmessage":
