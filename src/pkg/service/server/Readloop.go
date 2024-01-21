@@ -1,6 +1,7 @@
 package server
 
 import (
+	"AkwardSilents/pkg/service"
 	"fmt"
 	"golang.org/x/net/websocket"
 	"io"
@@ -20,8 +21,10 @@ func (s *Server) readLoopAccount(ws *websocket.Conn) {
 			continue
 		}
 		msg := buf[:n]
-		//TODO: Process the received message if needed
-		fmt.Println("Received message:", string(msg))
+		_, err = ws.Write([]byte(service.MessageHandlerAccount(msg))) //Process the received message
+		if err != nil {
+			return
+		}
 	}
 }
 func (s *Server) readLoopChat(ws *websocket.Conn) {
