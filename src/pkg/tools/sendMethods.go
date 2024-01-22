@@ -1,14 +1,25 @@
 package tools
 
-var users = make(map[string])
+import (
+    "golang.org/x/net/websocket"
+    "log"
+)
 
-func addName(name string, ws *websocket.Conn) {
+type User struct {
+    Name string
+    Conn *websocket.Conn
+}
+
+
+var users = make(map[string] *User)
+
+func AddName(name string, ws *websocket.Conn) {
     if name != "" {
         users[name] = &User{Name: name, Conn: ws}
     }
 }
 
-func sendMessage(name string, message string) string {
+func SendMessageToUser(name string, message string) bool {
     user, ok := users[name]
     if ok {
         err := websocket.JSON.Send(user.Conn, message)
@@ -21,6 +32,6 @@ func sendMessage(name string, message string) string {
     } 
 }
 
-func removeName(name string){
+func RemoveName(name string){
     delete(users, name)
 }
