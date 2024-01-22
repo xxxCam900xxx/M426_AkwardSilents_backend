@@ -9,7 +9,8 @@ import (
 	"strconv"
 	"strings"
 	"golang.org/x/net/websocket"
-	"AkwardSilents/pkg/service/functions")
+	"AkwardSilents/pkg/service/functions"
+)
 
 // Message Define a struct to hold the JSON data
 type register struct {
@@ -45,9 +46,9 @@ func MessageHandlerChats(msg []byte, ws *websocket.Conn, name *string) {
 	} else {
 		switch message.Typ {
 		case "login":
-			_, err = ws.Write([]byte(functions.Login(message.Content, name)))
+			_, err = ws.Write([]byte(functions.Login(message.Content, name, ws)))
 		case "sendmessage":
-			//sendmessage(message.Content)
+			functions.Sendmessage(message.Content, name)
 		case "getmessage":
 			//getmessage(message.Content)
 		case "getoverview":

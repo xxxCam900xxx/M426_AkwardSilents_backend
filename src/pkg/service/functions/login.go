@@ -3,9 +3,10 @@ package functions
 import (
 	"fmt"
 	"AkwardSilents/pkg/service/dbfunctions"
+	"AkwardSilents/pkg/tools"
 )
 
-func Login(content map[string]string, userName *string) string {
+func Login(content map[string]string, userName *string, ws *websocket.Conn) string {
 	key, ok := content["Key"]
 	// If the key exists
 	if !ok {
@@ -14,8 +15,6 @@ func Login(content map[string]string, userName *string) string {
 	}
 	fmt.Println(key);
 	if ok {
-		// Daten aus der Tabelle abrufen
-		// Daten aus der Tabelle abrufen
 		rows, err := db.DB.Query("SELECT name FROM User WHERE key = ?", key)
 		if err != nil {
 			panic(err)
@@ -26,7 +25,9 @@ func Login(content map[string]string, userName *string) string {
 		for rows.Next() {
 			var name string
 			err = rows.Scan(&name)
-			*userName = name	
+			*userName = name
+			tools.addName(name, ws)
+
 			if err != nil {
 				panic(err)			
 			}

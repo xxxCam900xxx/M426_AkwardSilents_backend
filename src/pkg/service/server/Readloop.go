@@ -38,11 +38,12 @@ func (s *Server) readLoopChat(ws *websocket.Conn) {
             fmt.Println("read error:", err) // other read error
             continue
         }
-        msg := buf[:n]
-        // Name initialisieren
-        service.MessageHandlerChats(msg, ws, &name)
+
+		msg := buf[:n]
+
+		service.MessageHandlerChats(msg, ws, &name)
 		fmt.Println("Neuer Name:",name)
-    
+		
         //TODO: Process the received message if needed
         fmt.Println("Received message:", string(msg))
     }
