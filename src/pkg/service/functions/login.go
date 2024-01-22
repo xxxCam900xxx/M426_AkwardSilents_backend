@@ -1,21 +1,22 @@
 package functions
 
 import (
+	db "AkwardSilents/pkg/service/dbfunctions"
+	"AkwardSilents/pkg/tools"
 	"fmt"
-	"AkwardSilents/pkg/service/dbfunctions"
+
+	"golang.org/x/net/websocket"
 )
 
-func Login(content map[string]string, userName *string) string {
+func Login(content map[string]string, userName *string, ws *websocket.Conn) string {
 	key, ok := content["Key"]
 	// If the key exists
 	if !ok {
 		// send back login failed
 		return "login failed"
 	}
-	fmt.Println(key);
+	fmt.Println(key)
 	if ok {
-		// Daten aus der Tabelle abrufen
-		// Daten aus der Tabelle abrufen
 		rows, err := db.DB.Query("SELECT name FROM User WHERE key = ?", key)
 		if err != nil {
 			panic(err)
@@ -26,9 +27,11 @@ func Login(content map[string]string, userName *string) string {
 		for rows.Next() {
 			var name string
 			err = rows.Scan(&name)
-			*userName = name	
+			*userName = name
+			tools.AddName(name, ws)
+
 			if err != nil {
-				panic(err)			
+				panic(err)
 			}
 			return "login success"
 		}
