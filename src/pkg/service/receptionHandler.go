@@ -1,6 +1,7 @@
 package service
 
 import (
+	"AkwardSilents/pkg/service/functions"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -9,7 +10,6 @@ import (
 	"strconv"
 	"strings"
 	"golang.org/x/net/websocket"
-	"AkwardSilents/pkg/service/functions"
 )
 
 // Message Define a struct to hold the JSON data
@@ -29,11 +29,10 @@ func init() {
 	log.Println("Log")
 }
 
-
 // Define a struct to hold the JSON data
 type message struct {
 	Typ     string            `json:"typ"` // sendmessage, getmessage, getoverview, getmembers  vt
-	Content	map[string]string `json:"content"`
+	Content map[string]string `json:"content"`
 }
 
 func MessageHandlerChats(msg []byte, ws *websocket.Conn, name *string) {
@@ -44,17 +43,18 @@ func MessageHandlerChats(msg []byte, ws *websocket.Conn, name *string) {
 	if err != nil {
 		fmt.Println("Error:", err)
 	} else {
+		fmt.Println("Typ von anfrage", message.Typ)
 		switch message.Typ {
 		case "login":
 			_, err = ws.Write([]byte(functions.Login(message.Content, name, ws)))
 		case "sendmessage":
-			functions.Sendmessage(message.Content, *name)
+			_, err = ws.Write([]byte(functions.Sendmessage(message.Content, *name)))
 		case "getmessage":
-			//getmessage(message.Content)
+			_, err = ws.Write([]byte(functions.GetMessage(message.Content, *name)))
 		case "getoverview":
-			//getoverview(message.Content)
+			_, err = ws.Write([]byte(functions.Overview(*name)))
 		case "getmembers":
-			//getmembers(message.Content)
+			_, err = ws.Write([]byte(functions.GetMembers()))
 		}
 	}
 }

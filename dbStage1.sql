@@ -18,7 +18,7 @@ CREATE TABLE Message (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   message TEXT NOT NULL,
   status TEXT NOT NULL,
-  time DATETIME NOT NULL,
+  time INTEGER NOT NULL,
   id_Personchats INTEGER NOT NULL,
   sender INTEGER NOT NULL,
   FOREIGN KEY (id_Personchats) REFERENCES Personchats(id),

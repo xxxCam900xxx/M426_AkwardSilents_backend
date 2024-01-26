@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let socket
+          function run() {
+            socket = null;
+        socket = new WebSocket("ws://localhost:3001/chat")
+        
+        setTimeout(() => {
+        socket.onmessage = (event) => { console.log("received form the server: ", event.data) }
+        socket.send("{'Typ':'login','Content': {'Key': 'hello'}}")
+        socket.send("{'Typ':'getoverview','Content': {}}")
+        socket.send("{'Typ':'sendmessage','Content': {'Name':'ws', 'Message':'Das ist eine Nachricht'}}")
+        socket.send("{'Typ':'getmessage','Content': {'id_Personchat':'1','Limit':'10'}}")
+            
+        }, 1000);
+          
+          }
+          
+          </script>
+
+
+</body>
+</html>

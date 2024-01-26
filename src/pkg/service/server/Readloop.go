@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"golang.org/x/net/websocket"
 	"io"
-
+	"AkwardSilents/pkg/tools"
 )
 
 func (s *Server) readLoopAccount(ws *websocket.Conn) {
@@ -26,6 +26,7 @@ func (s *Server) readLoopAccount(ws *websocket.Conn) {
 		}
 	}
 }
+
 func (s *Server) readLoopChat(ws *websocket.Conn) {
     buf := make([]byte, 1024)
     var name string
@@ -33,7 +34,8 @@ func (s *Server) readLoopChat(ws *websocket.Conn) {
         n, err := ws.Read(buf)
         if err != nil {
             if err == io.EOF { // client disconnected
-                break
+                tools.RemoveName(name)
+				break
             }
             fmt.Println("read error:", err) // other read error
             continue
