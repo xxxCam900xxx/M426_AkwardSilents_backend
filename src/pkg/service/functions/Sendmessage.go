@@ -8,9 +8,9 @@ import (
 	"time"
 )
 
-func Sendmessage(content map[string]string, userName string) {
+func Sendmessage(content map[string]string, userName string) string {
 	if userName != "" {
-		if checkValues(content, []string{"Name", "Message"}) {
+		if CheckValues(content, []string{"Name", "Message"}) {
 			sendName := content["Name"]
 			message := content["Message"]
 			messageStatus := 0
@@ -27,7 +27,6 @@ func Sendmessage(content map[string]string, userName string) {
 			jsonData, err := json.Marshal(data)
 			if err != nil {
 				fmt.Println(err)
-				return
 			}
 
 			jsonString := string(jsonData)
@@ -42,8 +41,12 @@ func Sendmessage(content map[string]string, userName string) {
 				insertChat(userName, sendName)
 				getChatID(userName, sendName, message, messageStatus, timestamp, userName)
 			}
+			fmt.Println("success send message")
+			return "logout"
 		}
+		return "logout"
 	}
+	return "logout"
 }
 
 func getChatID(userName string, sendName string, message string, status int, time int, sender string) bool {
@@ -87,7 +90,7 @@ func insertChat(userName string, sendName string) {
 	}
 }
 
-func checkValues(content map[string]string, values []string) bool {
+func CheckValues(content map[string]string, values []string) bool {
 	for _, value := range values {
 		if _, ok := content[value]; !ok {
 			return false

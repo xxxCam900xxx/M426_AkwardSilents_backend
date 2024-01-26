@@ -26,6 +26,7 @@ func (s *Server) readLoopAccount(ws *websocket.Conn) {
 		}
 	}
 }
+
 func (s *Server) readLoopChat(ws *websocket.Conn) {
     buf := make([]byte, 1024)
     var name string

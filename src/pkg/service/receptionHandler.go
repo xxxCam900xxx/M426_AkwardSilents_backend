@@ -48,13 +48,13 @@ func MessageHandlerChats(msg []byte, ws *websocket.Conn, name *string) {
 		case "login":
 			_, err = ws.Write([]byte(functions.Login(message.Content, name, ws)))
 		case "sendmessage":
-			functions.Sendmessage(message.Content, *name)
+			_, err = ws.Write([]byte(functions.Sendmessage(message.Content, *name)))
 		case "getmessage":
-			_, err = ws.Write([]byte(functions.GetMessage(*name)))
+			_, err = ws.Write([]byte(functions.GetMessage(message.Content, *name)))
 		case "getoverview":
 			_, err = ws.Write([]byte(functions.Overview(*name)))
 		case "getmembers":
-			//getmembers(message.Content)
+			_, err = ws.Write([]byte(functions.GetMembers()))
 		}
 	}
 }
